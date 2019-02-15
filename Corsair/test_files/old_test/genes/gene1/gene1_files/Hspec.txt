@@ -1,0 +1,6 @@
+Command line: [exonerate --model protein2genome --query corsair/Corsair/test_files/genes/gene1/gene1_files/gene1_prot.txt --target corsair/Corsair/test_files/temp/Hspec_gene1.fasta --ryo forcebeams 
+>Hspec
+%tcs
+ --bestn 1]
+Hostname: [pathfinder.local]
+-- completed exonerate analysis

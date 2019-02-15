@@ -1,0 +1,19 @@
+((((Aspec, Bspec),Cspec),(Dspec,Espec)),((Fspec,Gspec),Hspec));
+
+Aspec MRRACYLLYCPR*
+Bspec MRRECYLFYCPR*
+Cspec MRRDCYLLYCPR*
+Dspec MRRACYLLYCPR*
+Espec MRRECYLLYCPR*
+Fspec MRRACYLFYCPR*
+Gspec MRRDCYLLYCPR*
+Hspec MRRACYLLYCPR*
+
+atgaggagagcatgctacctgctgtat tgccccagatag
+atgagaagagaatgttacctatcttat tgccccagatag
+atgaggagggactgctacctactgtat tgtccaaggtag
+atgaggagagcatgttaccttctgtat tgccccagatag
+atgagaagggagtgctaccttctttat tgccccagatag
+atgaggagagcatgttaccttttttac tgccccaggtag
+atgaggagagattgctacctcctctac tggccgaggtaa
+atgaggagggcatgctacctcctctac tgccccaggtaa

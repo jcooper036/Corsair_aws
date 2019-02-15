@@ -1,0 +1,18 @@
+#ifndef DEFINE_HEADER_H
+#define DEFINE_HEADER_H
+
+#include "coffee_defines.h"
+#include "programmes_define.h"
+
+
+// the following constants are updated during the build process -- see the 'makefile' for details
+#define PROGRAM "T-COFFEE"
+#define AUTHOR "Cedric Notredame"
+#define DATE "04 Mar 2017 - 17:15"
+#define VERSION "dev_brew@20170304_17:15"
+#define BUILD_INFO "dev_brew@20170304_17:15"
+#define DISTRIBUTION_ADDRESS "www.tcoffee.org/Packages"
+
+
+
+#endif // DEFINE_HEADER_H
