@@ -1,7 +1,7 @@
 #!/bin/bash
 set -exuo pipefail
 
-export AWS_DEFAULT_REGION=us-east-1
+export AWS_DEFAULT_REGION=$region
 
 ## install batchit
 curl -Lo /usr/bin/batchit http://home.chpc.utah.edu/~u6000771/batchit
@@ -23,16 +23,23 @@ echo $cpus $gene_list $timeout
 
 ## get the command script if it is not there yet
 if [[ ! -e $corsair_command ]]; then
-  aws s3 cp $s3_path/$corsair_command $corsair_command
+  aws s3 cp ${s3_path}${corsair_command} $corsair_command
 fi
 
+## copy the Corsair module
+mkdir Corsair
+aws s3 cp --recursive s3://phadnisaws/Corsair/ Corsair/
+ls -lh Corsair
+
 ## copy the project path
-aws s3 cp --exclude "genes" --recursive s3://phadnisaws/projects/$project_path $project_path
+mkdir $project_path
+aws s3 cp --exclude "genes" --recursive s3://phadnisaws/projects/$project_path/ $project_path/
+ls -lh $project_path
 
 ## make the genomes directory, copy over the genomes. We don't actually need the fasta files, only the blast DB
-mkdir genomes
-aws s3 cp --exclude "*.fasta" --recursive $genomes_path ./$genomes/
-ls -lh genomes
+mkdir /mnt/local/genomes
+aws s3 cp --recursive $genomes_path /mnt/local/genomes/
+ls -lh /mnt/local/genomes
 
 export tblastn_threads=4
 export clade
@@ -42,7 +49,7 @@ runner() {
     gene=$1
 
     /usr/bin/timeout $timeout python3 $corsair_command $gene $ctl_file
-    (>&2 echo "$gene Transferring scaffolds to S3.")
+    (>&2 echo "$gene SUCESS!")
     aws s3 cp $project_path/genes/$gene/$gene.pkl s3://phadnisaws/projects/$project_path/genes/$gene/
     
     rm -f $project_path/genes/$gene/$gene.pkl

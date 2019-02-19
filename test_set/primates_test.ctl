@@ -10,10 +10,10 @@ project_directory:test_set/
 reference_CDS:test_set/Human_reference_CDS.fasta
 
 ## this where all the genomes are located
-genome_directory:genomes/
+genome_directory:/mnt/local/genomes/
 
 ## list of all the genes to run. They need to be a 1:1 exact match to the names in the ref CDS file.
-gene_list:test_set/gene_list.txt
+gene_list:test_set/testing_gene_list_1.txt
 
 ## clade tree (newick format). Names don't have to be 4 letters, but they MUST match the prefixes on genome files. No spaces.
 tree:(((((Ptro,Ppan),Hsap),Ggor),Nleu),((Mfas,Mmul),Cang));
