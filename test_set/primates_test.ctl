@@ -1,7 +1,10 @@
 ### Primate project practice ###
 
+## operating system. default is linux, options are "mac" or "linux". important for some execuatables
+operating_system:linux
+
 ## module directory. this is where the corsair directory is, absolute path
-corsair_directory:corsair/
+corsair_directory:./
 
 ## this is where all the files get stored. This does NOT have to be where the reference files are located, but any created files will go here
 project_directory:test_set/
@@ -13,7 +16,7 @@ reference_CDS:test_set/Human_reference_CDS.fasta
 genome_directory:/mnt/local/genomes/
 
 ## list of all the genes to run. They need to be a 1:1 exact match to the names in the ref CDS file.
-gene_list:test_set/testing_gene_list_1.txt
+gene_list:test_set/testing_gene_list_2.txt
 
 ## clade tree (newick format). Names don't have to be 4 letters, but they MUST match the prefixes on genome files. No spaces.
 tree:(((((Ptro,Ppan),Hsap),Ggor),Nleu),((Mfas,Mmul),Cang));

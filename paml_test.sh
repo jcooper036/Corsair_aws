@@ -3,19 +3,6 @@ set -exuo pipefail
 
 export AWS_DEFAULT_REGION=$region
 
-## install batchit
-curl -Lo /usr/bin/batchit http://home.chpc.utah.edu/~u6000771/batchit
-chmod +x /usr/bin/batchit
-pip install -U awscli
-
-## install gargs
-set +e
-gargs --help || {
-curl -Lo /usr/bin/gargs https://github.com/brentp/gargs/releases/download/v0.3.8/gargs_linux
-chmod +x /usr/bin/gargs
-}
-set -e
-
 df -h
 
 # genes is a file containing a list of isos.
@@ -28,23 +15,23 @@ fi
 
 ## copy the Corsair module
 mkdir Corsair
-aws s3 cp --recursive s3://phadnisaws/Corsair/ Corsair/
+aws s3 sync --exclude "bin/*" s3://phadnisaws/Corsair/ Corsair/
 ls -lh Corsair
 
 ## copy the project path
 mkdir $project_path
-aws s3 cp --exclude "genes" --recursive s3://phadnisaws/projects/$project_path/ $project_path/
+aws s3 cp --exclude "genes/*" --recursive s3://phadnisaws/projects/$project_path/ $project_path/
 ls -lh $project_path
+
+## make the genes folder
+mkdir $project_path/genes
 
 ## make the genomes directory, copy over the genomes. We don't actually need the fasta files, only the blast DB
 mkdir /mnt/local/genomes
 set +e
-aws s3 sync --exclude "*.fasta" $genomes_path /mnt/local/genomes/
+aws s3 sync --exclude "*" --include "*.fasta" --include "*.fai" $genomes_path /mnt/local/genomes/
 set -e
 ls -lh /mnt/local/genomes
-
-## make all the corsair bin work
-chmod -R 0777 Corsair/bin/
 
 export tblastn_threads=4
 export clade
@@ -53,11 +40,14 @@ runner() {
     set -euo pipefail
     gene=$1
 
+    ## copy the gene file from aws
+    aws s3 cp --recursive s3://phadnisaws/projects/$project_path/genes/$gene $project_path/genes/$gene
+
     /usr/bin/timeout $timeout python3 $corsair_command $gene $ctl_file
     (>&2 echo "$gene SUCESS!")
-    aws s3 cp $project_path/genes/$gene/$gene.pkl s3://phadnisaws/projects/$project_path/genes/$gene/
+    aws s3 cp --recursive $project_path/genes/$gene/ s3://phadnisaws/projects/$project_path/genes/$gene/
     
-    rm -f $project_path/genes/$gene/$gene.pkl
+    rm -rf $project_path/genes/$gene
    (>&2 echo "COMPLETED $gene")
 }
 export -f runner
